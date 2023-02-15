@@ -19,7 +19,7 @@ var YZM = {
 	}(),
 	'start': function() {
 		$.ajax({
-			url: "../player/php/api.php",
+			url: "./php/api.php",
 			dataType: "json",
 			success: function(e) {
 				YZM.waittime = e.data.waittime
