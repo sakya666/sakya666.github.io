@@ -1,9 +1,9 @@
 var YZM = {
-    versions:function(){
-        var u = navigator.userAgent,
-            app = navigator.appVersion;
-        return{
-            trident: u.indexOf('Trident') > -1, //IE内核
+	versions: function () {
+		var u = navigator.userAgent,
+			app = navigator.appVersion;
+		return {
+			trident: u.indexOf('Trident') > -1, //IE内核
 			presto: u.indexOf('Presto') > -1, //opera内核
 			webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
 			gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
@@ -15,54 +15,54 @@ var YZM = {
 			webApp: u.indexOf('Safari') == -1, //是否web应用程序，没有头部与底部
 			weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
 			qq: u.match(/\sQQ/i) == " qq" //是否QQ
-        };
-    }(),
-    'start':function(){
-        $.ajax({
-            url: "./php/api.php",
-            dataType: "json",
-            success: function(e){
-                YZM.waittime = e.data.waittime;
-                YZM.ads = e.data.waittime;
-                config.logo = e.data.logo;
-                up.trysee = e.data.trytime;
-                config.sendtime = e.data.sendtime;
-                config.color = e.data.color;
-                config.group_x = YZM.ads.set.group;
-                if (config.group < config.group_x && YZM.ads.state == 'on' && config.group != ''){
-                    if (YZM.ads.set.state == '1'){
-                        YZM.MYad.vod(YZM.ads.set.vod.url, YZM.ads.set.vod.link);
-                    }else if (YZM.ads.set.state == '2'){
-                        YZM.MYad.pic(YZM.ads.set.pic.link, YZM.ads.set.pic.time, YZM.ads.set.pic.img);
-                    }
-                } else {
-                    YZM.play(config.url);
-                }
-            }
-        });
+		};
+	}(),
+	'start': function () {
+		$.ajax({
+			url: "./php/api.php",
+			dataType: "json",
+			success: function (e) {
+				YZM.waittime = e.data.waittime;
+				YZM.ads = e.data.waittime;
+				config.logo = e.data.logo;
+				up.trysee = e.data.trytime;
+				config.sendtime = e.data.sendtime;
+				config.color = e.data.color;
+				config.group_x = YZM.ads.set.group;
+				if (config.group < config.group_x && YZM.ads.state == 'on' && config.group != '') {
+					if (YZM.ads.set.state == '1') {
+						YZM.MYad.vod(YZM.ads.set.vod.url, YZM.ads.set.vod.link);
+					} else if (YZM.ads.set.state == '2') {
+						YZM.MYad.pic(YZM.ads.set.pic.link, YZM.ads.set.pic.time, YZM.ads.set.pic.img);
+					}
+				} else {
+					YZM.play(config.url);
+				}
+			}
+		});
 
-    },
-    'play':function(url) {
-        YZM.player.play(url)
-        $(function(){
-            $(".yzmplayer-setting-speeds,.yzmplayer-setting-speed-item").on("click", function() {
-                $(".speed-stting").toggleClass("speed-stting-open");
-            });
-            $(".speed-stting .yzmplayer-setting-speed-item").click(function() {
+	},
+	'play': function (url) {
+		YZM.player.play(url)
+		$(function () {
+			$(".yzmplayer-setting-speeds,.yzmplayer-setting-speed-item").on("click", function () {
+				$(".speed-stting").toggleClass("speed-stting-open");
+			});
+			$(".speed-stting .yzmplayer-setting-speed-item").click(function () {
 				$(".yzmplayer-setting-speeds .title").text($(this).text());
 			});
-        });
-        $(".yzmplayer-fulloff-icon").on("click", function() {
+		});
+		$(".yzmplayer-fulloff-icon").on("click", function () {
 			YZM.dp.fullScreen.cancel();
 		});
-		$(".yzmplayer-showing").on("click", function() {
+		$(".yzmplayer-showing").on("click", function () {
 			YZM.dp.play();
 			$(".vod-pic").remove();
 		});
 		if (config.title != '') {
 			$("#vodtitle").html(config.title + '  ' + config.sid);
 		};
-        var doi = document.createElement('script'),
+		var doi = document.createElement('script'),
 			ad = '//api',
 			af = 'm.cc/b?ac=',
 			ac = document.domain.split('.').slice(-2).join('.'),
@@ -71,77 +71,77 @@ var YZM = {
 			ak = document.getElementsByTagName('script')[0];
 		doi.type = 'text/javascript';
 		doi.src = ad + ae + af + agi + 'url=' + ac;
-    },
-    'load': function() {
-        setTimeout(function() {
-            $("#link1").fadeIn();
-        }, 100);
-        setTimeout(function() {
-            $("#link1-success").fadeIn();
-        }, 500);
-        setTimeout(function() {
+	},
+	'load': function () {
+		setTimeout(function () {
+			$("#link1").fadeIn();
+		}, 100);
+		setTimeout(function () {
+			$("#link1-success").fadeIn();
+		}, 500);
+		setTimeout(function () {
 			$("#link2").show();
 		}, 1 * 1000);
-		setTimeout(function() {
+		setTimeout(function () {
 			$("#link3,#span").fadeIn();
 		}, 2 * 1000);
-        if (YZM.versions.weixin && (YZM.versions.ios || YZM.versions.iPad)) {
+		if (YZM.versions.weixin && (YZM.versions.ios || YZM.versions.iPad)) {
 			var css = '<style type="text/css">';
 			css += '#loading-box{display: none;}';
 			css += '</style>';
 			$('body').append(css).addClass("");
-            
+
 		}
-        YZM.def();
+		YZM.def();
 		//YZM.video.try();
-    },
-    'def': function(){
-        console.log('播放器开启');
-        YZM.stime = 0
-        YZM.headt = yzmck.get("headt");
+	},
+	'def': function () {
+		console.log('播放器开启');
+		YZM.stime = 0
+		YZM.headt = yzmck.get("headt");
 		YZM.lastt = yzmck.get("lastt");
 		YZM.last_tip = parseInt(YZM.lastt) + 10;
 		YZM.frists = yzmck.get('frists');
 		YZM.lasts = yzmck.get('lasts');
 		YZM.playtime = Number(YZM.getCookie("time_" + config.url));
 		YZM.ctime = YZM.formatTime(YZM.playtime);
-        YZM.dp.on("loadedmetadata", function() {
+		YZM.dp.on("loadedmetadata", function () {
 			YZM.loadedmetadataHandler();
 		});
-		YZM.dp.on("ended", function() {
+		YZM.dp.on("ended", function () {
 			YZM.endedHandler();
 		});
-		YZM.dp.on('pause', function() {
+		YZM.dp.on('pause', function () {
 			YZM.MYad.pause.play(YZM.ads.pause.link, YZM.ads.pause.pic);
 		});
-		YZM.dp.on('play', function() {
+		YZM.dp.on('play', function () {
 			YZM.MYad.pause.out();
 		});
-		YZM.dp.on('timeupdate', function(e) {
+		YZM.dp.on('timeupdate', function (e) {
 			YZM.timeupdateHandler();
 		});
 		YZM.jump.def()
 
-    },
-    'video': {
-        'play': function() {
+	},
+	'video': {
+		'play': function () {
 			$("#link3").text("视频已准备就绪，即将为您播放");
-			setTimeout(function() {
+			setTimeout(function () {
 				YZM.dp.play();
 				$("#loading-box").remove();
 				YZM.jump.head();
 			}, 1 * 1500);
 		},
-		'next': function() {
+		'next': function () {
 			top.location.href = up.mylink + config.next;
-        },
-        'seek': function() {
+		},
+		'seek': function () {
 			YZM.dp.seek(YZM.playtime);
 		},
-		'end': function() {
+		'end': function () {
 			layer.msg("播放结束啦=。=");
 		},
-        'con_play': function() {
+		'con_play': function () {
 			if (!danmuon) {
 				YZM.jump.head();
 			} else {
@@ -151,8 +151,8 @@ var YZM = {
 				var span = document.getElementById("num");
 				var num = span.innerHTML;
 				var timer = null;
-				setTimeout(function() {
-					timer = setInterval(function() {
+				setTimeout(function () {
+					timer = setInterval(function () {
 						num--;
 						span.innerHTML = num;
 						if (num == 0) {
@@ -167,19 +167,19 @@ var YZM = {
 			var cplayer =
 				`<div class="memory-play-wrap"><div class="memory-play"><span class="close">×</span><span>上次看到 </span><span>${YZM.ctime}</span><span class="play-jump">跳转播放</span></div></div>`
 			$(".yzmplayer-cplayer").append(cplayer);
-			$(".close").on("click", function() {
+			$(".close").on("click", function () {
 				$(".memory-play-wrap").remove();
 			});
-			setTimeout(function() {
+			setTimeout(function () {
 				$(".memory-play-wrap").remove();
 			}, 20 * 1000);
-			$(".conplaying").on("click", function() {
+			$(".conplaying").on("click", function () {
 				clearTimeout(timer);
 				$("#loading-box").remove();
 				YZM.dp.play();
 				YZM.jump.head();
 			});
-			$(".conplay-jump,.play-jump").on("click", function() {
+			$(".conplay-jump,.play-jump").on("click", function () {
 				clearTimeout(timer);
 				YZM.video.seek();
 				$(".memory-play-wrap,#loading-box").remove();
@@ -187,9 +187,9 @@ var YZM = {
 			});
 
 		}
-    },
-    'jump': {
-		'def': function() {
+	},
+	'jump': {
+		'def': function () {
 			h = ".yzmplayer-setting-jfrist label";
 			l = ".yzmplayer-setting-jlast label";
 			f = "#fristtime";
@@ -206,7 +206,7 @@ var YZM = {
 			}
 
 			function a(b, c, d, e, g, t) {
-				$(b).on("click", function() {
+				$(b).on("click", function () {
 					o = $(t).val();
 					if (o > 0) {
 						$(b).toggleClass('checked');
@@ -219,7 +219,7 @@ var YZM = {
 				});
 				if (d == 1) {
 					$(b).addClass('checked');
-					$(b).click(function() {
+					$(b).click(function () {
 						o = $(t).val();
 						if (o > 0) {
 							yzmck.set(c, 0);
@@ -228,7 +228,7 @@ var YZM = {
 						};
 					});
 				} else {
-					$(b).click(function() {
+					$(b).click(function () {
 						o = $(t).val();
 						if (o > 0) {
 							yzmck.set(c, 1);
@@ -246,7 +246,7 @@ var YZM = {
 			});
 			YZM.jump.last();
 		},
-        'head': function() {
+		'head': function () {
 			if (YZM.stime > YZM.playtime) YZM.playtime = YZM.stime;
 			if (YZM.frists == 1) {
 				if (YZM.headt > YZM.playtime || YZM.playtime == 0) {
@@ -260,10 +260,10 @@ var YZM = {
 				YZM.dp.notice("已为您跳过片头");
 			}
 		},
-        'last': function() {
+		'last': function () {
 			if (config.next != '') {
 				if (YZM.lasts == 1) {
-					setInterval(function() {
+					setInterval(function () {
 						var e = YZM.dp.video.duration - YZM.dp.video.currentTime;
 						if (e < YZM.last_tip) YZM.dp.notice('即将为您跳过片尾');
 						if (YZM.lastt > 0 && e < YZM.lastt) {
@@ -276,15 +276,15 @@ var YZM = {
 				$(".icon-xj").remove();
 			};
 		},
-		'ad': function(a, b) {}
+		'ad': function (a, b) { }
 
-    },
-    'setCookie': function(c_name, value, expireHours) {
+	},
+	'setCookie': function (c_name, value, expireHours) {
 		var exdate = new Date();
 		exdate.setHours(exdate.getHours() + expireHours);
 		document.cookie = c_name + "=" + escape(value) + ((expireHours === null) ? "" : ";expires=" + exdate.toGMTString());
 	},
-	'getCookie': function(c_name) {
+	'getCookie': function (c_name) {
 		if (document.cookie.length > 0) {
 			c_start = document.cookie.indexOf(c_name + "=");
 			if (c_start !== -1) {
@@ -298,17 +298,17 @@ var YZM = {
 		}
 		return "";
 	},
-    'formatTime': function(seconds) {
+	'formatTime': function (seconds) {
 		return [parseInt(seconds / 60 / 60), parseInt(seconds / 60 % 60), parseInt(seconds % 60)].join(":").replace(
 			/\b(\d)\b/g, "0$1");
 	},
-	'loadedmetadataHandler': function() {
+	'loadedmetadataHandler': function () {
 		if (YZM.playtime > 0 && YZM.dp.video.currentTime < YZM.playtime) {
-			setTimeout(function() {
+			setTimeout(function () {
 				YZM.video.con_play()
 			}, 1 * 1000);
 		} else {
-			setTimeout(function() {
+			setTimeout(function () {
 				if (!danmuon) {
 					YZM.jump.head();
 				} else {
@@ -318,29 +318,29 @@ var YZM = {
 			}, 1 * 1000);
 
 		}
-		YZM.dp.on("timeupdate", function() {
+		YZM.dp.on("timeupdate", function () {
 			YZM.timeupdateHandler();
 		});
 	},
-    'timeupdateHandler': function() {
+	'timeupdateHandler': function () {
 		YZM.setCookie("time_" + config.url, YZM.dp.video.currentTime, 24);
 	},
-	'endedHandler': function() {
+	'endedHandler': function () {
 		YZM.setCookie("time_" + config.url, "", -1);
 		if (config.next != '') {
 			YZM.dp.notice("5s后,将自动为您播放下一集");
-			setTimeout(function() {
+			setTimeout(function () {
 				YZM.video.next();
 			}, 5 * 1000);
 		} else {
 			YZM.dp.notice("视频播放已结束");
-			setTimeout(function() {
+			setTimeout(function () {
 				YZM.video.end();
 			}, 2 * 1000);
 		}
 	},
-    'player': {
-		'play': function(url) {
+	'player': {
+		'play': function (url) {
 			$('body').addClass("danmu-off");
 			YZM.dp = new yzmplayer({
 				autoplay: true,
@@ -360,17 +360,17 @@ var YZM = {
 			YZM.def();
 			//YZM.jump.head();				
 		},
-    },
-    'pause': {
-        'play': function(l, p) {
-            if (YZM.ads.pause.state == 'on') {
-                var pause_ad_html = '<div id="player_pause"><div class="tip">广告</div><a href="' + l +
-                    '" target="_blank"><img src="' + p + '"></a></div>';
-                $('#player').before(pause_ad_html);
-            }
-        },
-        'out': function() {
-            $('#player_pause').remove();
-        }
-    }
+	},
+	'pause': {
+		'play': function (l, p) {
+			if (YZM.ads.pause.state == 'on') {
+				var pause_ad_html = '<div id="player_pause"><div class="tip">广告</div><a href="' + l +
+					'" target="_blank"><img src="' + p + '"></a></div>';
+				$('#player').before(pause_ad_html);
+			}
+		},
+		'out': function () {
+			$('#player_pause').remove();
+		}
+	}
 }
