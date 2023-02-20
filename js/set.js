@@ -18,29 +18,46 @@ var YZM = {
 		};
 	}(),
 	'start': function () {
-		$.ajax({
-			url: "./php/api.php",
-			dataType: "json",
-			success: function (e) {
-				YZM.waittime = e.data.waittime;
-				YZM.ads = e.data.waittime;
-				config.logo = e.data.logo;
-				up.trysee = e.data.trytime;
-				config.sendtime = e.data.sendtime;
-				config.color = e.data.color;
-				config.group_x = YZM.ads.set.group;
-				if (config.group < config.group_x && YZM.ads.state == 'on' && config.group != '') {
-					if (YZM.ads.set.state == '1') {
-						YZM.MYad.vod(YZM.ads.set.vod.url, YZM.ads.set.vod.link);
-					} else if (YZM.ads.set.state == '2') {
-						YZM.MYad.pic(YZM.ads.set.pic.link, YZM.ads.set.pic.time, YZM.ads.set.pic.img);
-					}
-				} else {
-					YZM.play(config.url);
-				}
-			}
-		});
+		YZM.waittime = '10';
 
+		var ads = {
+			'set': {
+				'state': '1',
+				'group': '2',
+				'pic': {
+					'time': '3',
+					'img': 'https://i.bmp.ovh/imgs/2021/11/156735e0b1ecf602.jpg',
+					'link': ''
+				},
+				'vod': {
+					'url': '',
+					'link': ''
+				}
+			},
+			'pause': {
+				'pic': '',
+				'link': ''
+			}
+		}
+		YZM.ads = ads;
+		config.logo = '';
+		up.pbgjz = '';
+		up.trysee = '3';
+		config.sendtime = '1';
+		config.color = '#00a1d6';
+		config.group_x = ads.set.group;
+		config.dmrule = '';
+		//config.group = YZM.getCookie('group_id');
+		danmuon = 'off';
+		if (config.group < config.group_x && YZM.ads.state == 'on' && config.group != '') {
+			if (YZM.ads.set.state == '1') {
+				YZM.MYad.vod(YZM.ads.set.vod.url, YZM.ads.set.vod.link);
+			} else if (YZM.ads.set.state == '2') {
+				YZM.MYad.pic(YZM.ads.set.pic.link, YZM.ads.set.pic.time, YZM.ads.set.pic.img);
+			}
+		} else {
+			YZM.play(config.url);
+		}
 	},
 	'play': function (url) {
 		YZM.player.play(url)
