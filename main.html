@@ -181,6 +181,7 @@
     <script src="js/set.js"></script>
     <script>
         var url = decodeURIComponent(decodeURIComponent(window.location.href)).split('url=')[1];
+        url = url.replace('http://','https://');
         console.log(url);
         if (url.endsWith('m3u8')){
             $("head").append('<script src="js/hls.min.js"><\/script>');
